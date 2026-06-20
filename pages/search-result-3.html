@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>勇气与决心 - 搜索结果</title>
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <style>
+        /* ========== 搜索结果页独有样式 ========== */
+
+        .scene-container {
+            max-width: 100vw;
+            min-height: 100vh;
+            margin: 0;
+            border-radius: 0;
+            background: #f5f5f5;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* ===== 顶部搜索栏 ===== */
+        .search-header {
+            position: relative;
+            z-index: 10;
+            padding: 12px 16px;
+            background: #ffffff;
+            border-bottom: 1px solid #e8e8e8;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+        }
+
+        .btn-back {
+            width: 36px;
+            height: 36px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border-radius: 50%;
+            transition: background 0.2s;
+            color: #333;
+            font-size: 20px;
+            border: none;
+            background: none;
+        }
+        .btn-back:hover { background: #f5f5f5; }
+        .btn-back:active { background: #e8e8e8; }
+
+        /* 搜索框 */
+        .search-input-wrapper {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            background: #f5f5f5;
+            border-radius: 24px;
+            padding: 0 16px;
+            height: 42px;
+            border: 1.5px solid transparent;
+        }
+        .search-icon {
+            color: #999;
+            font-size: 17px;
+            margin-right: 8px;
+            flex-shrink: 0;
+        }
+        .search-keyword {
+            flex: 1;
+            border: none;
+            outline: none;
+            background: transparent;
+            font-size: 16px;
+            color: #333;
+            font-family: var(--font-sans);
+        }
+        .btn-clear {
+            width: 22px;
+            height: 22px;
+            flex-shrink: 0;
+            border-radius: 50%;
+            background: #c0c0c0;
+            border: none;
+            color: #fff;
+            font-size: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .btn-clear:hover { background: #999; }
+
+        .btn-search-text {
+            flex-shrink: 0;
+            padding: 0 8px;
+            color: #4e6ef2;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            background: none;
+        }
+
+        /* ===== 搜索信息条 ===== */
+        .search-info {
+            padding: 10px 20px;
+            background: #ffffff;
+            font-size: 13px;
+            color: #999;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .search-info .count {
+            color: #333;
+            font-weight: 500;
+        }
+
+        /* ===== 结果列表 ===== */
+        .results-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0;
+            background: #ffffff;
+        }
+
+        /* 单条结果 */
+        .result-item {
+            padding: 16px 20px;
+            border-bottom: 1px solid #f0f0f0;
+            cursor: pointer;
+            transition: background 0.15s ease;
+            display: block;
+            text-decoration: none;
+            color: inherit;
+        }
+        .result-item:hover {
+            background: #fafbff;
+        }
+        .result-item:active {
+            background: #f0f2ff;
+        }
+
+        /* 结果标题 */
+        .result-title {
+            font-size: 17px;
+            font-weight: 600;
+            color: #1a0dab;
+            line-height: 1.5;
+            margin-bottom: 4px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .result-title:visited {
+            color: #609;
+        }
+
+        /* 关键词标红 */
+        .highlight {
+            color: #b30808;
+            font-weight: 600;
+        }
+
+        /* 结果来源与时间 */
+        .result-meta {
+            font-size: 12px;
+            color: #888;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .result-meta .source {
+            color: #1a8a3a;
+            font-weight: 500;
+        }
+
+        /* 结果摘要 */
+        .result-snippet {
+            font-size: 14px;
+            color: #555;
+            line-height: 1.6;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* ===== 底部分页 ===== */
+        .pagination {
+            padding: 16px;
+            background: #ffffff;
+            text-align: center;
+            border-top: 1px solid #eee;
+        }
+        .pagination-text {
+            font-size: 13px;
+            color: #999;
+        }
+
+        /* 响应式 */
+        @media (min-width: 768px) {
+            .scene-container {
+                max-width: 480px;
+                margin: 0 auto;
+                min-height: 90vh;
+                border-radius: 12px;
+                border: 1px solid #e0e0e0;
+            }
+        }
+
+        @media (min-width: 1400px) {
+            .scene-container {
+                max-width: 480px;
+                margin: 1rem auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 主场景容器 -->
+    <div class="scene-container page-enter">
+
+        <!-- 顶部搜索栏 -->
+        <div class="search-header">
+            <button class="btn-back" onclick="goBack()" title="返回">←</button>
+
+            <div class="search-input-wrapper">
+                <span class="search-icon">🔍</span>
+                <input 
+                    type="text" 
+                    class="search-keyword" 
+                    id="searchKeyword" 
+                    value="勇气与决心"
+                    readonly
+                >
+                <button class="btn-clear" onclick="clearAndGoBack()">✕</button>
+            </div>
+
+            <button class="btn-search-text" onclick="doSearch()">搜索</button>
+        </div>
+
+        <!-- 搜索信息条 -->
+        <div class="search-info">
+            找到约 <span class="count">1</span> 条相关结果
+        </div>
+
+        <!-- 搜索结果列表 -->
+        <div class="results-list" id="resultsList">
+
+            <!-- 结果1：王曼昱专访 -->
+            <div class="result-item" onclick="showDetail(1)">
+                <div class="result-title">
+                    榜样引路人｜对话《Houston World》刊发作者：在休斯敦世界看见她的<span class="highlight">勇气与决心</span>
+                </div>
+                <div class="result-meta">
+                    <span class="source">管院之声</span>
+                    <span>2022年2月07日</span>
+                </div>
+                <div class="result-snippet">
+                    "曼"长征途，终获硕果；笔耕不辍，载"昱"前行。本期榜样引路人专题，我们对话优秀作者王曼昱，一同探寻她背后的创作历程，聆听她深耕钻研的故事...
+                </div>
+            </div>
+
+        </div>
+
+        <!-- 底部分页 -->
+        <div class="pagination">
+            <span class="pagination-text">共 1 条结果</span>
+        </div>
+
+    </div>
+
+    <!-- 引入全局公共JS -->
+    <script src="../assets/js/global.js"></script>
+
+    <script>
+        // ========== 搜索结果页独有逻辑 ==========
+
+        function showDetail(index) {
+            console.log('📄 点击搜索结果:', index);
+
+            const resultPages = {
+                1: 'post8-勇气与决心.html',     // 结果1 → 勇气与决心专访
+            };
+
+            const targetPage = resultPages[index];
+
+            if (targetPage) {
+                GameAPI.storage.set('lastClickedResult', index);
+                GameAPI.navigateTo(targetPage, 300);
+            } else {
+                console.log('   ↳ 暂未配置跳转目标');
+            }
+        }
+
+        function goBack() {
+            GameAPI.navigateTo('search.html', 200);
+        }
+
+        function clearAndGoBack() {
+            goBack();
+        }
+
+        function doSearch() {
+            GameAPI.navigateTo('search.html', 200);
+        }
+
+        console.log('📋 搜索结果页加载完成 - 关键词：勇气与决心');
+    </script>
+</body>
+</html>

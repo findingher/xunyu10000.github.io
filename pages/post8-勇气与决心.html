@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>勇气与决心 - 王曼昱专访</title>
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <style>
+        /* ========== 微信公众号推文独有样式 ========== */
+
+        .scene-container {
+            max-width: 100vw;
+            min-height: 100vh;
+            margin: 0;
+            border-radius: 0;
+            background: #ffffff;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* ===== 顶部导航栏（微信公众号风格） ===== */
+        .wechat-nav {
+            position: relative;
+            z-index: 10;
+            padding: 12px 16px;
+            background: #ffffff;
+            border-bottom: 1px solid #ededed;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .btn-back {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border-radius: 50%;
+            transition: background 0.2s;
+            color: #333;
+            font-size: 18px;
+            border: none;
+            background: none;
+        }
+        .btn-back:hover { background: #f5f5f5; }
+        .nav-title {
+            font-size: 15px;
+            font-weight: 500;
+            color: #333;
+            letter-spacing: 0.5px;
+        }
+        .nav-placeholder {
+            width: 32px;
+        }
+
+        /* ===== 可滚动内容区 ===== */
+        .article-scroll {
+            flex: 1;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* ===== 推文头部 ===== */
+        .article-header {
+            padding: 24px 28px 8px;
+        }
+        .article-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #111;
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+        .article-meta {
+            font-size: 13px;
+            color: #999;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .article-meta .source-name {
+            color: #576b95;
+            font-weight: 500;
+        }
+
+        /* 分割线 */
+        .divider {
+            width: 100%;
+            height: 1px;
+            background: #ededed;
+            margin: 12px 0;
+        }
+
+        /* ===== 推文正文 ===== */
+        .article-body {
+            padding: 0 28px 30px;
+            font-size: 16px;
+            color: #333;
+            line-height: 1.9;
+            letter-spacing: 0.3px;
+        }
+        .article-body p {
+            margin-bottom: 16px;
+        }
+
+        /* ===== 专访副标题 ===== */
+        .interview-subtitle {
+            font-size: 14px;
+            color: #888;
+            text-align: center;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        .interview-motto {
+            font-size: 16px;
+            color: #c41e2a;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+        }
+
+        /* ===== 专访Q&A ===== */
+        .qa-block {
+            margin-bottom: 20px;
+        }
+        .qa-question {
+            font-size: 15px;
+            font-weight: 700;
+            color: #111;
+            margin-bottom: 6px;
+        }
+        .qa-answer {
+            font-size: 15px;
+            color: #555;
+            line-height: 1.9;
+        }
+        .qa-answer .speaker {
+            color: #576b95;
+            font-weight: 600;
+        }
+
+        /* ===== 图片区 ===== */
+        .photo-area {
+            margin: 8px 0 4px;
+            text-align: center;
+        }
+        .photo-placeholder {
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            background: #f5f5f5;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #bbb;
+            font-size: 14px;
+            overflow: hidden;
+            position: relative;
+        }
+        .photo-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        .photo-caption {
+            font-size: 12px;
+            color: #999;
+            margin-top: 6px;
+            text-align: center;
+        }
+
+        /* ===== 结尾金句 ===== */
+        .closing-quote {
+            text-align: center;
+            font-size: 15px;
+            font-weight: 600;
+            color: #c41e2a;
+            margin: 20px 0;
+            letter-spacing: 1px;
+            line-height: 1.8;
+        }
+
+        /* ===== 底部 ===== */
+        .article-footer {
+            padding: 20px;
+            text-align: center;
+            border-top: 1px solid #ededed;
+            margin-top: 10px;
+        }
+        .article-footer .views {
+            font-size: 13px;
+            color: #999;
+        }
+
+        /* 响应式 */
+        @media (min-width: 768px) {
+            .scene-container {
+                max-width: 500px;
+                margin: 0 auto;
+                min-height: 90vh;
+                border-radius: 12px;
+                border: 1px solid #e0e0e0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 主场景容器 -->
+    <div class="scene-container page-enter">
+
+        <!-- 顶部导航 -->
+        <div class="wechat-nav">
+            <button class="btn-back" onclick="goBack()" title="返回">←</button>
+            <span class="nav-title">微信公众号</span>
+            <div class="nav-placeholder"></div>
+        </div>
+
+        <!-- 可滚动内容 -->
+        <div class="article-scroll">
+
+            <!-- 推文头部 -->
+            <div class="article-header">
+                <h1 class="article-title">
+                    榜样引路人｜对话《Houston World》刊发作者王曼昱：在休斯敦世界看见她的勇气与决心
+                </h1>
+                <div class="article-meta">
+                    <span class="source-name">管院之声</span>
+                    <span>2022年2月07日</span>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- 推文正文 -->
+            <div class="article-body">
+
+                <p class="interview-motto">
+                    "曼"长征途，终获硕果；笔耕不辍，载"昱"前行。
+                </p>
+
+                <p class="interview-subtitle">
+                    在学术与创作的道路上，每一份高质量成果的刊发，都是日积月累的沉淀与孜孜不倦的求索。
+                </p>
+
+                <p>
+                    近日，我院学子王曼昱凭借扎实的专业能力与深刻的创作思考，其优秀作品成功刊发于国际期刊《Houston World》，用实力展现了青年学子的学术风采与钻研精神，成为身边人前行的榜样。
+                </p>
+
+                <p>
+                    本期榜样引路人专题，我们对话优秀作者王曼昱，一同探寻她背后的创作历程，聆听她深耕钻研的故事，感受青年学者逐梦前行的热忱与力量。
+                </p>
+
+                <!-- 生活照 -->
+                <div class="photo-area">
+                    <div class="photo-placeholder">
+                        <img src="../assets/images/houston-selfie.png" alt="王曼昱学姐生活照">
+                        <span>📷 王曼昱学姐生活照</span>
+                    </div>
+                    <p class="photo-caption">▲ 王曼昱学姐生活照</p>
+                </div>
+
+                <!-- Q&A 1 -->
+                <div class="qa-block">
+                    <p class="qa-question">1. 恭喜学姐的论文成功见刊《Houston World》，可以简单和我们分享一下这次研究的整体经历吗？</p>
+                    <p class="qa-answer"><span class="speaker">王曼昱：</span>开始做这个项目时我给自己的定位肯定是去冲去拼顶刊，但其实投稿环节我还是有些保守，在纠结之下都是求稳的感觉更多。我收到录用通知的那天确实非常高兴，同时确实有一种如释重负的感觉，在梦想多年的期刊正式发表后，那种感觉是我既想到过又没有想到过的。</p>
+                </div>
+
+                <!-- Q&A 2 -->
+                <div class="qa-block">
+                    <p class="qa-question">2. 恭喜学姐完成了一直以来的梦想。你当初是如何确定这篇文章的研究方向的？选题时就对顶刊有很直接的渴望吗？</p>
+                    <p class="qa-answer"><span class="speaker">王曼昱：</span>对，就是觉得我要去成为最强的这个人。这种想法让我在实验和写作里感受到的紧张和压力都没有那么沉重了。以前我好像每天把自己闷在一个小世界里，压力很大，这一次我反而学会了一心向目标前进，享受过程，全力以赴就好。</p>
+                </div>
+
+                <!-- Q&A 3 -->
+                <div class="qa-block">
+                    <p class="qa-question">3. 这次发表对你来说意味着什么？未来有什么新的规划？</p>
+                    <p class="qa-answer"><span class="speaker">王曼昱：</span>这是我第一次在影响力这么大的期刊上发表论文，能够完成一直以来的梦想对我来说意义非凡，我还记得接到录用通知是21年11月的最后一天，可以说211130也成了我生命中一个很重要的数字。确实是很美好的一次经历，很感谢所有帮助过我的人，感谢支持我的人。目前还是研究生阶段，有了这次经验以后希望未来能有更多更深入的产出。</p>
+                </div>
+
+                <!-- Q&A 4 -->
+                <div class="qa-block">
+                    <p class="qa-question">4. 有时候也会有遗憾，学姐能跟我们分享你在这次经历中有什么感觉"不完美"的地方吗？</p>
+                    <p class="qa-answer"><span class="speaker">王曼昱：</span>其实这次还有和我一位师兄一起做的一个相关的项目，也认真准备了一段时间，但是这次因为一些出国交流的安排，我们的成果没能顺利上线。错过了一个比较重要的会议，也是比较可惜吧，希望后续还有机会再去完善。</p>
+                </div>
+
+                <!-- Q&A 5 -->
+                <div class="qa-block">
+                    <p class="qa-question">5. 在获得了如此成就之后，学姐给自己定的下一个目标是什么？</p>
+                    <p class="qa-answer"><span class="speaker">王曼昱：</span>现在问起来的话，研一阶段嘛，我长远和长期的目标肯定是希望未来能有更多更深入的成果，会奔着这个目标一直努力。近期目标我可能会说做好每一个手头的实验，或者是做好2022年的最重要的项目申报和创新比赛吧。</p>
+                </div>
+
+                <!-- Q&A 6 -->
+                <div class="qa-block">
+                    <p class="qa-question">6. 最后一个问题，学姐能给我们说一句鼓舞的话吗？</p>
+                    <p class="qa-answer"><span class="speaker">王曼昱：</span>战胜困难要比一帆风顺更踏实一些，再出发，再努力！</p>
+                </div>
+                
+                <!-- 采访现场照 -->
+                <div class="photo-area">
+                    <div class="photo-placeholder">
+                        <img src="../assets/images/houston-interview.png" alt="王曼昱学姐接受采访现场">
+                        <span>📷 王曼昱学姐接受采访现场</span>
+                    </div>
+                    <p class="photo-caption">▲ 王曼昱学姐接受采访现场</p>
+                </div>
+
+
+                <!-- 结尾 -->
+                <p class="closing-quote">
+                    一纸期刊成果，见证深耕笃行；一席倾心交谈，传递榜样力量。
+                </p>
+
+                <p>
+                    王曼昱凭借不懈的努力与执着的追求，在专业领域斩获亮眼成绩，成功在高水平期刊发表作品，用实际行动诠释了青年学子的担当与实力，也让211130成为了她人生中重要的数字。
+
+                <p>
+                    愿我们以榜样为帆，以热爱为桨，在求学路上脚踏实地、锐意进取，书写属于青年一代的精彩篇章，绽放属于自己的光芒。
+                </p>
+            </div>
+
+            <!-- 底部 -->
+            <div class="article-footer">
+                <span class="views">阅读 1.8万</span>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- 引入全局公共JS -->
+    <script src="../assets/js/global.js"></script>
+
+    <script>
+        function goBack() {
+            GameAPI.navigateTo('search-result-3.html', 200);
+        }
+
+        console.log('📄 推文页加载完成 - 勇气与决心（王曼昱专访）');
+    </script>
+</body>
+</html>
