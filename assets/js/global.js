@@ -2,7 +2,6 @@
  * 密室解密游戏 - 全局公共方法库
  * 版本: 1.1
  * 说明: 所有页面通过 window.GameAPI 调用，保持行为统一。
- * 新增: 支持浏览器手势返回（popstate）
  */
 
 (function() {
@@ -67,24 +66,16 @@
         click() { this.playTone(600, 0.08); }
     };
 
-    // ---------- 页面跳转（支持浏览器手势返回）----------
+    // ---------- 页面跳转 ----------
     function navigateTo(url, delay = 0) {
         setTimeout(() => {
             document.body.style.opacity = '0';
             document.body.style.transition = 'opacity 0.25s ease';
             setTimeout(() => {
-                history.pushState({ page: url }, '', url);
                 window.location.href = url;
             }, 250);
         }, delay);
     }
-
-    // 监听浏览器后退（手机手势返回 / 浏览器返回按钮）
-    window.addEventListener('popstate', function(e) {
-        if (e.state && e.state.page) {
-            window.location.href = e.state.page;
-        }
-    });
 
     // ---------- 弹窗系统 ----------
     function showModal({ title = '提示', content = '', confirmText = '确定', onConfirm = null, showCancel = false, cancelText = '取消' } = {}) {
@@ -202,5 +193,5 @@
         setupPasswordInput,
     };
 
-    console.log('✅ 密室游戏全局工具库已加载 (GameAPI v1.1)');
+    console.log('✅ 密室游戏全局工具库已加载 (GameAPI)');
 })();
