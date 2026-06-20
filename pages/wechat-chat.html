@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>🐟 - 聊天</title>
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <style>
+        .scene-container {
+            max-width: 100vw;
+            height: 100vh;
+            margin: 0;
+            border-radius: 0;
+            background: #ededed;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .chat-top-bar {
+            background: #ededed;
+            padding: 14px 16px 10px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid #e0e0e0;
+            flex-shrink: 0;
+        }
+        .chat-back {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 20px;
+            color: #191919;
+            border: none;
+            background: none;
+        }
+        .chat-title {
+            flex: 1;
+            font-size: 17px;
+            font-weight: 600;
+            color: #191919;
+            text-align: center;
+        }
+        .chat-placeholder { width: 32px; }
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            min-height: 0;
+        }
+        .msg-row {
+            display: flex;
+            gap: 8px;
+            max-width: 80%;
+            animation: fadeInUp 0.3s ease;
+            flex-shrink: 0;
+        }
+        .msg-row.me {
+            align-self: flex-end;
+            flex-direction: row-reverse;
+        }
+        .msg-row.fish {
+            align-self: flex-start;
+        }
+        .msg-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 4px;
+            flex-shrink: 0;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: #fff;
+            background-color: #f5fffa;
+        }
+        .msg-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .msg-row.me .msg-avatar {
+            background-color: #b3efb8;
+        }
+        .msg-bubble {
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 15px;
+            line-height: 1.6;
+            word-break: break-word;
+        }
+        .msg-row.fish .msg-bubble {
+            background: #ffffff;
+            color: #191919;
+        }
+        .msg-row.me .msg-bubble {
+            background: #95ec69;
+            color: #191919;
+        }
+        .chat-input-area {
+            background: #f7f7f7;
+            border-top: 1px solid #e0e0e0;
+            padding: 10px 12px;
+            padding-bottom: max(10px, env(safe-area-inset-bottom));
+            display: flex;
+            gap: 8px;
+            align-items: flex-end;
+            flex-shrink: 0;
+        }
+        .input-wrapper {
+            flex: 1;
+            background: white;
+            border-radius: 20px;
+            padding: 8px 14px;
+            border: 1px solid #e0e0e0;
+            min-height: 40px;
+        }
+        .input-wrapper textarea {
+            width: 100%;
+            border: none;
+            outline: none;
+            font-size: 15px;
+            background: transparent;
+            font-family: inherit;
+            resize: none;
+            overflow-y: hidden;
+            line-height: 1.4;
+            display: block;
+        }
+        .send-btn {
+            background: #07c160;
+            border: none;
+            color: white;
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            height: 40px;
+            align-self: flex-end;
+        }
+        .send-btn.disabled {
+            background: #c0c0c0;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+        .send-btn:active:not(.disabled) { opacity: 0.7; }
+        .option-btn {
+            width: 100%;
+            padding: 12px;
+            background: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #191919;
+            cursor: pointer;
+            text-align: left;
+            transition: background 0.15s;
+        }
+        .option-btn:active { background: #ececec; }
+        .ending-btn {
+            width: 100%;
+            padding: 12px;
+            background: #4e6ef2;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            letter-spacing: 2px;
+        }
+        .ending-btn:active { opacity: 0.8; }
+        @media (min-width: 768px) {
+            .scene-container {
+                max-width: 430px;
+                height: 90vh;
+                margin: 5vh auto;
+                border-radius: 24px;
+                border: 1px solid #d0d0d0;
+            }
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .chat-options {
+            padding: 10px 16px;
+            background: #f7f7f7;
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+        .empty-panel {
+            background: #f7f7f7;
+            border-top: 1px solid #e0e0e0;
+            height: 60px;
+            flex-shrink: 0;
+        }
+    </style>
+</head>
+<body>
+<div class="scene-container page-enter">
+
+    <div class="chat-top-bar">
+        <button class="chat-back" onclick="goBack()">←</button>
+        <span class="chat-title">🐟</span>
+        <div class="chat-placeholder"></div>
+    </div>
+
+    <div class="chat-messages" id="chatMessages"></div>
+
+    <div id="bottomPanel"></div>
+
+</div>
+
+<script src="../assets/js/global.js"></script>
+<script>
+    const messagesContainer = document.getElementById('chatMessages');
+    const bottomPanel = document.getElementById('bottomPanel');
+    
+    const originalDialogAfterChoice = [
+        { type: 'me', text: '没有啦没有啦。我刚刚好在网上看到你写的小说，我觉得这个作者写得太好了，看到评论区的微信，就想着加一下作者聊聊我的想法，结果搜索微信越看越眼熟，没想到竟然真的是你！' },
+        { type: 'fish', text: '😳😳谢谢你啊，那个故事也有段时间了而且我也没写完…没想到还有人记得。' },
+        { type: 'me', text: '啊啊但是你写的很好，我能感受到故事里的主角是一个特别有魅力的运动员！我觉得她身上不服输的精神特别感染人，就像她真的活在这个世界上一样。如果真的有这样一个人，我一定会成为她的球迷的！' },
+        { type: 'fish', text: '嗯……也许她确实活在某处吧(*￣︶￣)。我可以问一下你觉得她最打动你的地方是什么吗？' },
+        { type: 'me', text: '当然可以了！其实最打动我的一点不是她取得了多少荣誉，更不是输或者赢，而是她一次又一次拯救自己、坚守本心的意志品质；是那颗忠正、洁净而美丽的心。' },
+        { type: 'me', text: '我坚信她总有一天会亲手实现自己的梦想的。而她的粉丝（也包括我）会一直在观众席上注视她，为她加油打气。我想无论重来多少次，我都会爱上你，你能够出现在我生命里，真是上天对我的眷顾。' },
+        { type: 'fish', text: '你是说小说里的情节吧？其实她后来…确实多了很多为她加油的球迷，她也很感谢他们。那你觉得我有什么写得不好的地方吗？' },
+        { type: 'me', text: '呃对的，我说的"你"是小说主角……倒也不是写的不好，只是我有个问题，其实这部小说的灵感和原型不是网球，对不对？' },
+        { type: 'fish', text: '嗯，不过我也说不上来是什么，你就当是我做梦梦到虚构出来的吧，所以设定没那么详尽。' },
+        { type: 'me', text: '你已经做得很好了，能让人感受到这种运动的吸引力。我很期待后续的故事，也会一直一直为你加油的❤️' },
+        { type: 'fish', text: '我也不确定会不会写后续了…不过还是谢谢你喜欢这个故事。如果她知道应该会开心的。' },
+        { type: 'me', text: '你也要开心曼昱。其实我一直觉得你很优秀、很厉害，我也是你的头号粉丝来的！如果你当运动员的话应该也和那个女孩一样厉害吧^^。我们…很长一段时间没见了，你过得怎么样？' },
+        { type: 'fish', text: '谢谢谢谢……我过得挺好的，只是生活可能没有世界冠军那么精彩吧，哈哈' },
+        { type: 'me', text: '怎么会呢？是不是世界冠军都不影响你是个很好的人，一定会拥有美丽的人生。因为你是王曼昱呀，我知道你也是那个"非常想赢"的奇迹一样的女孩。' },
+        { type: 'fish', text: '不好意思，请问你…是不是知道些什么？' },
+        { type: 'me', text: '你就当我知道吧，我只再说最后一句就好了。' },
+        { type: 'me', text: '我最想对你说的话就是：曼昱，无论发生什么事，无论你选择怎样的人生…我都希望你能够幸福，我也会永远、永远祝福你。' },
+    ];
+    
+    const alternativeDialog = [
+        { type: 'me', text: '不是的，我真的是你的粉丝！额……或者说另一个世界的你的粉丝，今天我睡醒以后照常想看看手机有没有什么她的消息，结果发现乒乓球一整个不见了，好像在这世界上从未存在过。' },
+        { type: 'me', text: '今天是你们人生的第一万天，我真的很想找到你，找到她，找到王曼昱。' },
+        { type: 'fish', text: '那你是怎么找到我的？这个世界没有你说的那个…乒乓球了，想找王曼昱应该很难吧？' },
+        { type: 'me', text: '刚开始我也觉得没有希望了，如果乒乓球不见了，我又该去哪里找你呢，可是我试着搜索了一下，发现不是这样的。' },
+        { type: 'me', text: '其实一点也不难，这个世界的王曼昱，也就是你，同样很优秀很耀眼，成长为了很好很好的大人。' },
+        { type: 'me', text: '我有想过到底要不要告诉你这些，能知道你的存在，知道你生活过得不错就够了。我甚至不知道乒乓球消失了对我来说是件好事还是坏事，也许关于它，关于乒乓球运动员王曼昱，只是我臆想出来的怪梦罢了。' },
+        { type: 'fish', text: '其实，我也梦见过关于她，关于那个乒乓球的很多很多事，你也知道，在这个世界根本没有这样一项运动，我也一直不能确定，可感受实在太过清晰了……' },
+        { type: 'me', text: '我知道！我看见了，我看见了你写的小说，所以我才会下定决心来找你。小说里王曼昱的所有经历，她对那颗小球的真心和付出，都和我了解的如初一辙。' },
+        { type: 'me', text:'如果乒乓球不存在，我们也没有任何交集，真的会有这样的两个人，虚构出一个根本不存在的乒乓球，再做完全一模一样的梦吗？所以，这一切一定都是真的，或许是宇宙开的某种玩笑吧，平行宇宙之间发生了错乱，让她的人生出现在你的梦里，也让一觉睡醒的我出现在这个世界。' },
+        { type: 'fish', text: '虽然我一直坚信我的梦是真的，但我还是有些被冲击到了…' },
+        { type: 'me', text: '抱歉，希望没有打扰到你，但我真的很想让你知道。作为旁观者，我看见了镜子的两面，两个不同却在共振的灵魂和人生，你们走过的每一步都算数，交织在不同时空中。无论在哪个宇宙，王曼昱都非常棒。你优秀又善良，坚韧勇敢坚定，所有我会用来形容她的词语，也全部可以用来形容你。' },
+        { type: 'fish', text: '算不上打扰的，我还要感谢你告诉我这些！' },
+        { type: 'fish', text: '其实你说的，也是我坚信另一个世界的她存在的原因，我的烦恼和挫折、欣喜和成功，总是能够与梦中的她的那些经历对照上，即使我没有能够在掌声中举起奖杯，但我也为她骄傲，为我的小小成就们骄傲。' },
+        { type: 'me', text: '这一切就是很值得骄傲呀！' },
+        { type: 'me', text: '无论这个世界有没有乒乓球，我都没办法真正完整地认识你们，但我仍旧无比敬佩为了乒乓球全力以赴的她，和在这个世界里努力生活的你。所以，请为自己骄傲吧。' },
+        { type: 'fish', text: '谢谢你！或许就像你说的，我比想象中的自己要更棒吧😊' },
+        { type: 'me', text: '你在我心里永远是这个世界上最棒的女孩。曼昱，也许一觉睡醒我就会回到原来的世界……所以我还有最后一个问题想问你。' },
+        { type: 'fish', text: '你说吧。' },
+        { type: 'me', text: '其实在原来的世界，我总是觉得这颗小球给我、给她带来了很多痛苦，但我也想过，如果乒乓球不存在了，我要去哪里找她，真的会更幸福吗？' },
+        { type: 'me', text: '所以，在这个没有乒乓球的世界，你幸福快乐吗？' },
+        { type: 'fish', text: '即使没有乒乓球，我也有我想要追寻的目标，我想我是幸福的。' },
+        { type: 'me', text: '谢谢你，曼昱，这就是我最希望听到的答案。' },
+        { type: 'me', text: '无论在哪一个世界，我都会怀着最真挚的感情，祝愿王曼昱，祝你平安喜乐，顺遂无忧，永远幸福快乐。' }
+    ];
+    
+    let currentDialogArray = null;
+    let currentStep = 0;
+    let pendingTimeout = null;
+    let isWaiting = false;
+    let sendCooldown = false;
+    let stage = 'start';
+    let currentPath = null;
+    let typeInterval = null;
+    
+    function calculateDelayByText(text) {
+        const charCount = text.length;
+        let delay = charCount * 0.15;
+        if (delay < 2.5) delay = 2.5;
+        if (delay > 7) delay = 7;
+        return Math.round(delay * 1000);
+    }
+    
+    const STORAGE_KEY = 'chat_session_state';
+    
+    function saveSessionState() {
+        const messages = [];
+        const messageElements = document.querySelectorAll('.msg-row');
+        messageElements.forEach(el => {
+            const type = el.classList.contains('me') ? 'me' : 'fish';
+            const textEl = el.querySelector('.msg-bubble');
+            if (textEl) {
+                messages.push({ type, text: textEl.innerText });
+            }
+        });
+        const state = {
+            messages: messages,
+            stage: stage,
+            currentPath: currentPath,
+            currentStep: currentStep,
+            dialogType: currentPath === 'original' ? 'original' : (currentPath === 'alternative' ? 'alternative' : null)
+        };
+        try { sessionStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch(e) {}
+    }
+    
+    function loadSessionState() {
+        try {
+            const saved = sessionStorage.getItem(STORAGE_KEY);
+            if (!saved) return false;
+            const state = JSON.parse(saved);
+            messagesContainer.innerHTML = '';
+            if (state.messages && state.messages.length > 0) {
+                state.messages.forEach(msg => addMessageDirect(msg.type, msg.text));
+            } else { return false; }
+            stage = state.stage || 'start';
+            currentPath = state.currentPath || null;
+            currentStep = state.currentStep || 0;
+            if (stage === 'choice') {
+                showChoiceButtons();
+            } else if (stage === 'conversation') {
+                if (state.dialogType === 'original') currentDialogArray = [...originalDialogAfterChoice];
+                else if (state.dialogType === 'alternative') currentDialogArray = [...alternativeDialog];
+                if (currentDialogArray && currentStep < currentDialogArray.length) {
+                    setEmptyPanel();
+                    setTimeout(() => {
+                        if (currentDialogArray && currentStep < currentDialogArray.length) processNextItem();
+                        else if (currentDialogArray && currentStep >= currentDialogArray.length) showEndingButtonWithDelay();
+                    }, 500);
+                } else if (currentDialogArray && currentStep >= currentDialogArray.length) {
+                    showEndingButtonWithDelay();
+                } else { setEmptyPanel(); }
+            } else if (stage === 'ending') {
+                bottomPanel.innerHTML = `
+                    <div class="chat-options">
+                        <button class="ending-btn" onclick="goToEnding()">通往结局</button>
+                        <button class="option-btn" onclick="restartChat()" style="text-align:center;font-size:12px;color:#999;margin-top:4px;">回到打招呼（体验另一对话）</button>
+                    </div>
+                `;
+            } else { setEmptyPanel(); }
+            return true;
+        } catch(e) { return false; }
+    }
+    
+    function addMessage(type, text) { addMessageDirect(type, text); saveSessionState(); }
+    
+    function addMessageDirect(type, text) {
+        const row = document.createElement('div');
+        row.className = 'msg-row ' + type;
+        const avatar = type === 'fish' 
+            ? '<div class="msg-avatar" style="background:#4e6ef2;"><img src="../assets/images/avatar-xiaoyu-wechat.png" alt="头像"></div>'
+            : '<div class="msg-avatar"></div>';
+        row.innerHTML = avatar + '<div class="msg-bubble">' + escapeHtml(text) + '</div>';
+        messagesContainer.appendChild(row);
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+    
+    function clearPending() { 
+        if (pendingTimeout) { clearTimeout(pendingTimeout); pendingTimeout = null; } 
+        if (typeInterval) { clearInterval(typeInterval); typeInterval = null; }
+        isWaiting = false; 
+    }
+    
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
+    }
+    
+    function setEmptyPanel() { bottomPanel.innerHTML = '<div class="empty-panel"></div>'; }
+    
+    function showInputWithPreset(presetMessage, onSendComplete) {
+        bottomPanel.innerHTML = `
+            <div class="chat-input-area">
+                <div class="input-wrapper">
+                    <textarea id="messageInput" rows="1" placeholder="输入消息..." style="min-height:40px;max-height:none;overflow:hidden;"></textarea>
+                </div>
+                <button class="send-btn disabled" id="sendBtn" disabled>发送</button>
+            </div>
+        `;
+        const textarea = document.getElementById('messageInput');
+        const sendBtn = document.getElementById('sendBtn');
+        
+        function autoResize() {
+            textarea.style.height = 'auto';
+            textarea.style.height = textarea.scrollHeight + 'px';
+        }
+        
+        let charIndex = 0;
+        typeInterval = setInterval(() => {
+            if (charIndex < presetMessage.length) {
+                const chunkSize = Math.floor(Math.random() * 2) + 2;
+                textarea.value += presetMessage.substring(charIndex, charIndex + chunkSize);
+                autoResize();
+                charIndex += chunkSize;
+            } else {
+                clearInterval(typeInterval);
+                typeInterval = null;
+                sendCooldown = true;
+                setTimeout(() => {
+                    sendBtn.disabled = false;
+                    sendBtn.classList.remove('disabled');
+                    sendCooldown = false;
+                }, 500);
+            }
+        }, 120);
+        
+        sendBtn.onclick = () => {
+            if (sendCooldown) return;
+            if (typeInterval) { clearInterval(typeInterval); typeInterval = null; }
+            textarea.value = presetMessage;
+            addMessage('me', presetMessage);
+            setEmptyPanel();
+            saveSessionState();
+            if (onSendComplete) onSendComplete();
+        };
+    }
+    
+    function showChoiceButtons() {
+        bottomPanel.innerHTML = `
+            <div class="chat-options">
+                <button class="option-btn" id="optionAltBtn">（告知真相）抱歉可能贸然地打扰了你，但我想告诉关于你的梦，关于另一个世界的真相。</button>
+                <button class="option-btn" id="optionOriginalBtn">（隐瞒身份）曼昱学姐🥺…我是咱们管院的那个小x，当时负责过你的专访，你你可能不记得我了嗯……</button>
+            </div>
+        `;
+        document.getElementById('optionAltBtn').onclick = () => {
+            setEmptyPanel();
+            clearPending();
+            stage = 'conversation';
+            currentPath = 'alternative';
+            const firstText = "抱歉可能贸然地打扰了你，但我想告诉关于你的梦，关于另一个世界的真相。";
+            showInputWithPreset(firstText, () => {
+                setTimeout(() => {
+                    const secondText = "我是乒乓球运动员王曼昱的粉丝。";
+                    showInputWithPreset(secondText, () => {
+                        setTimeout(() => {
+                            const replyText = '！？你…不会是什么恶作剧吧';
+                            addMessage('fish', replyText);
+                            setTimeout(() => {
+                                startAlternativeFlow();
+                            }, 1000);
+                        }, calculateDelayByText(secondText));
+                    });
+                }, 600);
+            });
+        };
+        document.getElementById('optionOriginalBtn').onclick = () => {
+            setEmptyPanel();
+            clearPending();
+            stage = 'conversation';
+            currentPath = 'original';
+            const optionText = "曼昱学姐🥺…我是咱们管院的那个小x，当时负责过你的专访，你你可能不记得我了嗯……";
+            showInputWithPreset(optionText, () => {
+                setTimeout(() => {
+                    const replyText = '啊，你好。请问你加我有什么事情吗？';
+                    addMessage('fish', replyText);
+                    setTimeout(() => { startOriginalFlow(); }, 1000);
+                }, calculateDelayByText(optionText));
+            });
+        };
+        saveSessionState();
+    }
+    
+    function startOriginalFlow() { currentDialogArray = [...originalDialogAfterChoice]; currentStep = 0; processNextItem(); }
+    function startAlternativeFlow() { currentDialogArray = [...alternativeDialog]; currentStep = 0; processNextItem(); }
+    
+    function showEndingButtonWithDelay() {
+        stage = 'ending';
+        saveSessionState();
+        setEmptyPanel();
+        setTimeout(() => {
+            bottomPanel.innerHTML = `
+                <div class="chat-options">
+                    <button class="ending-btn" onclick="goToEnding()">通往结局</button>
+                    <button class="option-btn" onclick="restartChat()" style="text-align:center;font-size:12px;color:#999;margin-top:4px;">回到打招呼（体验另一对话）</button>
+                </div>
+            `;
+            saveSessionState();
+        }, 3000);
+    }
+    
+    function restartChat() {
+        clearPending();
+        sessionStorage.removeItem(STORAGE_KEY);
+        startOpening();
+    }
+    
+    function processNextItem() {
+        if (!currentDialogArray || currentStep >= currentDialogArray.length) { showEndingButtonWithDelay(); return; }
+        const item = currentDialogArray[currentStep];
+        if (item.type === 'fish') {
+            isWaiting = true;
+            let lastText = '';
+            if (currentStep > 0) { const prevItem = currentDialogArray[currentStep - 1]; if (prevItem && prevItem.type === 'me') lastText = prevItem.text; }
+            const isSpecialLongDelay = (item.text === '即使没有乒乓球，我也有我想要追寻的目标，我想我是幸福的。' || item.text === '不好意思，请问你…是不是知道些什么？');
+            let delay = isSpecialLongDelay ? 5000 : calculateDelayByText(lastText);
+            pendingTimeout = setTimeout(() => {
+                addMessage('fish', item.text);
+                isWaiting = false;
+                currentStep++;
+                saveSessionState();
+                processNextItem();
+            }, delay);
+        } else if (item.type === 'me') {
+            isWaiting = true;
+            let lastText = '';
+            if (currentStep > 0) { const prevItem = currentDialogArray[currentStep - 1]; if (prevItem && prevItem.type === 'fish') lastText = prevItem.text; }
+            let delay = calculateDelayByText(lastText);
+            if (!lastText) delay = 1500;
+            pendingTimeout = setTimeout(() => {
+                isWaiting = false;
+                showInputWithPreset(item.text, () => {
+                    currentStep++;
+                    saveSessionState();
+                    processNextItem();
+                });
+            }, delay);
+        }
+    }
+    
+    function startOpening() {
+        messagesContainer.innerHTML = '';
+        stage = 'start';
+        sessionStorage.removeItem(STORAGE_KEY);
+        const firstMsg = "曼昱…是你吗？";
+        showInputWithPreset(firstMsg, () => {
+            setEmptyPanel();
+            const delay = calculateDelayByText(firstMsg);
+            pendingTimeout = setTimeout(() => {
+                addMessage('fish', '你好，请问你是？');
+                setTimeout(() => { stage = 'choice'; saveSessionState(); showChoiceButtons(); }, 1000);
+            }, delay);
+        });
+    }
+    
+    function goBack() {
+        clearPending();
+        saveSessionState();
+        GameAPI.audio.click();
+        GameAPI.navigateTo('wechat-main.html', 200);
+    }
+    
+    function goToEnding() {
+        clearPending();
+        saveSessionState();
+        GameAPI.audio.success();
+        GameAPI.storage.set('chatComplete', true);
+        GameAPI.navigateTo('ending.html', 400);
+    }
+    
+    window.addEventListener('DOMContentLoaded', () => {
+        if (!loadSessionState()) startOpening();
+    });
+    
+    window.addEventListener('beforeunload', () => {
+        clearPending();
+        saveSessionState();
+    });
+</script>
+</body>
+</html>
