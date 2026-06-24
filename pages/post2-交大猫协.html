@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>猫猫日报 - 王曼昱</title>
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <style>
+        /* ========== 微博发文独有样式 ========== */
+
+        .scene-container {
+            max-width: 100vw;
+            min-height: 100vh;
+            margin: 0;
+            border-radius: 0;
+            background: #ffffff;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* ===== 顶部导航栏（微博风格） ===== */
+        .weibo-nav {
+            position: relative;
+            z-index: 10;
+            padding: 12px 16px;
+            background: #ffffff;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .btn-back {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border-radius: 50%;
+            transition: background 0.2s;
+            border: none;
+            background: none;
+        }
+        .btn-back:hover { background: #f5f5f5; }
+        .btn-back img {
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
+        }
+        .nav-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+        }
+        .nav-placeholder {
+            width: 32px;
+        }
+
+        /* ===== 可滚动内容区 ===== */
+        .article-scroll {
+            flex: 1;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* ===== 用户信息头部 ===== */
+        .user-header {
+            display: flex;
+            align-items: center;
+            padding: 16px 16px 12px;
+            gap: 10px;
+        }
+        .avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            overflow: hidden;
+            background: #f0f0f0;
+        }
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .user-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .user-name {
+            font-size: 15px;
+            font-weight: 600;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .verified-badge {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            background: #ff8200;
+            border-radius: 50%;
+            font-size: 10px;
+            color: #fff;
+            text-align: center;
+            line-height: 16px;
+        }
+        .post-time {
+            font-size: 12px;
+            color: #999;
+        }
+        .btn-follow {
+            flex-shrink: 0;
+            padding: 6px 16px;
+            background: #ff8200;
+            color: #fff;
+            border: none;
+            border-radius: 16px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        .btn-follow:active {
+            opacity: 0.8;
+        }
+
+        /* ===== 微博正文 ===== */
+        .post-body {
+            padding: 0 16px 8px;
+            font-size: 16px;
+            color: #333;
+            line-height: 1.75;
+            letter-spacing: 0.3px;
+        }
+        .post-body .post-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            display: block;
+        }
+        .post-body p {
+            margin-bottom: 12px;
+        }
+        .at-link {
+            color: #2b6dad;
+        }
+
+        /* ===== 四宫格图片区 ===== */
+        .post-images {
+            padding: 0 16px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4px;
+            margin-bottom: 12px;
+        }
+        .post-images .img-placeholder {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            background: #f5f5f5;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .post-images .img-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* ===== 互动栏 ===== */
+        .post-actions {
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+            border-top: 1px solid #f5f5f5;
+            border-bottom: 1px solid #f5f5f5;
+            margin: 0 16px;
+        }
+        .action-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 13px;
+            color: #999;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 4px 8px;
+        }
+        .action-item img {
+            width: 18px;
+            height: 18px;
+            object-fit: contain;
+        }
+        .action-item:hover { color: #ff8200; }
+
+        /* ===== 底部 ===== */
+        .article-footer {
+            padding: 20px;
+            text-align: center;
+        }
+        .article-footer .views {
+            font-size: 13px;
+            color: #999;
+        }
+
+        /* 响应式 */
+        @media (min-width: 768px) {
+            .scene-container {
+                max-width: 500px;
+                margin: 0 auto;
+                min-height: 90vh;
+                border-radius: 12px;
+                border: 1px solid #e0e0e0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 主场景容器 -->
+    <div class="scene-container page-enter">
+
+        <!-- 顶部导航 -->
+        <div class="weibo-nav">
+            <button class="btn-back" onclick="goBack()" title="返回">
+                <img src="../assets/images/weibo-return.png" alt="返回">
+            </button>
+            <span class="nav-title">微博</span>
+            <div class="nav-placeholder"></div>
+        </div>
+
+        <!-- 可滚动内容 -->
+        <div class="article-scroll">
+
+            <!-- 用户信息头部 -->
+            <div class="user-header">
+                <div class="avatar">
+                    <img src="../assets/images/猫协头像.png" alt="交大动物保护协会">
+                </div>
+                <div class="user-info">
+                    <div class="user-name">
+                        交大动物保护协会
+                        <span class="verified-badge">✓</span>
+                    </div>
+                    <span class="post-time">2020年11月15日 14:30</span>
+                </div>
+                <button class="btn-follow" onclick="follow()">+ 关注</button>
+            </div>
+
+            <!-- 微博正文 -->
+            <div class="post-body">
+                <span class="post-title">猫猫日报：与猫相遇，温柔相伴</span>
+                <p>
+                    在忙碌的校园时光里，总有一群毛茸茸的小身影默默治愈着我们。为了让每一只流浪的小生命都能被温柔以待，让爱心与责任同行，校园猫协特别举办了校园巡撸公益活动，用温暖守护校园里的小美好。
+                </p>
+                <p>
+                    活动圆满结束，我们收集到了许多可爱的照片，有常年喂猫的学姐被小猫簇拥，也有第一次参与活动的怕猫同学第一次摸到小猫，感谢到场的每一位参与者！
+                </p>
+                <p>
+                    活动负责人：猫协志愿者 王曼昱 <span class="at-link">@BlueAbby0209</span><br>
+                    照片人物授权：p1、p2 <span class="at-link">@BlueAbby0209</span> , p3 <span class="at-link">@ludengandfish</span>, p4 <span class="at-link">@glasssteelmetaheart</span>
+                </p>
+            </div>
+
+            <!-- 四宫格图片区 -->
+            <div class="post-images">
+                <div class="img-placeholder">
+                    <img src="../assets/images/cat-1.jpg" alt="猫协活动照片1">
+                </div>
+                <div class="img-placeholder">
+                    <img src="../assets/images/cat-2.jpg" alt="猫协活动照片2">
+                </div>
+                <div class="img-placeholder">
+                    <img src="../assets/images/cat-3.jpg" alt="猫协活动照片3">
+                </div>
+                <div class="img-placeholder">
+                    <img src="../assets/images/cat-4.jpg" alt="猫协活动照片4">
+                </div>
+            </div>
+
+            <!-- 互动栏 -->
+            <div class="post-actions">
+                <span class="action-item"><img src="../assets/images/weibo-share.png" alt="转发"> 转发 2</span>
+                <span class="action-item"><img src="../assets/images/weibo-comment.png" alt="评论"> 评论 12</span>
+                <span class="action-item"><img src="../assets/images/weibo-thumbsup.png" alt="赞"> 点赞 23</span>
+            </div>
+
+            <!-- 底部 -->
+            <div class="article-footer">
+                <span class="views">阅读 209</span>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- 引入全局公共JS -->
+    <script src="../assets/js/global.js"></script>
+
+    <script>
+        // ========== 推文页独有逻辑 ==========
+
+        function goBack() {
+            GameAPI.navigateTo('search-result-1.html', 200);
+        }
+
+        function follow() {
+            const btn = document.querySelector('.btn-follow');
+            if (btn.textContent.includes('关注')) {
+                btn.textContent = '✓ 已关注';
+                btn.style.background = '#ccc';
+            } else {
+                btn.textContent = '+ 关注';
+                btn.style.background = '#ff8200';
+            }
+        }
+
+        console.log('📄 推文页加载完成 - 交大动物保护协会');
+    </script>
+</body>
+</html>

@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>为小侄女征名 - 海角论坛</title>
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <style>
+        /* ========== 早期天涯论坛独有样式 ========== */
+
+        .scene-container {
+            max-width: 100vw;
+            min-height: 100vh;
+            margin: 0;
+            border-radius: 0;
+            background: #e8e4d9;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* ===== 顶部导航（早期天涯风格） ===== */
+        .tianya-nav {
+            position: relative;
+            z-index: 10;
+            padding: 8px 12px;
+            background: #2b5a8c;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #fff;
+        }
+        .btn-back {
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border-radius: 4px;
+            color: #fff;
+            font-size: 16px;
+            border: none;
+            background: rgba(255,255,255,0.1);
+            flex-shrink: 0;
+            transition: background 0.2s;
+        }
+        .btn-back:hover { background: rgba(255,255,255,0.2); }
+        .nav-logo {
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: #ffd700;
+        }
+        .nav-links {
+            display: flex;
+            gap: 12px;
+            font-size: 12px;
+            margin-left: auto;
+            color: #bcd4ec;
+        }
+        .nav-links span {
+            cursor: pointer;
+        }
+
+        /* ===== 论坛路径面包屑 ===== */
+        .breadcrumb {
+            padding: 8px 14px;
+            background: #f5f2e8;
+            font-size: 12px;
+            color: #666;
+            border-bottom: 1px solid #d5cfbf;
+            letter-spacing: 0.5px;
+        }
+        .breadcrumb span { color: #2b5a8c; }
+        .breadcrumb .sep { color: #999; margin: 0 4px; }
+
+        /* ===== 可滚动内容区 ===== */
+        .article-scroll {
+            flex: 1;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* ===== 帖子容器 ===== */
+        .post-container {
+            background: #faf8f2;
+            margin: 8px 10px;
+            border: 1px solid #d5cfbf;
+            border-radius: 2px;
+        }
+
+        /* 帖子标题 */
+        .post-title-bar {
+            background: #e8e2d2;
+            padding: 10px 14px;
+            border-bottom: 1px solid #d5cfbf;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .post-category {
+            font-size: 11px;
+            color: #fff;
+            background: #8b7355;
+            padding: 2px 8px;
+            border-radius: 2px;
+            white-space: nowrap;
+        }
+        .post-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #222;
+            line-height: 1.4;
+        }
+
+        /* 主楼 */
+        .main-post {
+            padding: 14px;
+        }
+        .post-author-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        /* 白色默认头像 */
+        .author-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 4px;
+            background: #ffffff;
+            border: 1px solid #d5cfbf;
+            flex-shrink: 0;
+        }
+        .author-info {
+            flex: 1;
+        }
+        .author-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: #2b5a8c;
+        }
+        .author-name .lz-tag {
+            font-size: 10px;
+            color: #c41e2a;
+            font-weight: 400;
+            margin-left: 4px;
+        }
+        .post-meta {
+            font-size: 11px;
+            color: #999;
+        }
+        .floor-num {
+            float: right;
+            font-size: 11px;
+            color: #bbb;
+            font-weight: 700;
+        }
+
+        /* 主楼内容 */
+        .post-content {
+            font-size: 14px;
+            color: #333;
+            line-height: 1.85;
+            padding-bottom: 4px;
+        }
+        .post-content p {
+            margin-bottom: 8px;
+        }
+
+        /* ===== 回复区 ===== */
+        .replies-section {
+            background: #faf8f2;
+            margin: 0 10px 8px;
+            border: 1px solid #d5cfbf;
+            border-radius: 2px;
+        }
+        .replies-count {
+            padding: 8px 14px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #555;
+            border-bottom: 1px solid #e8e2d2;
+            background: #f0ece0;
+        }
+
+        /* 单条回复 */
+        .reply-item {
+            padding: 10px 14px;
+            border-bottom: 1px solid #e8e2d2;
+        }
+        .reply-item:last-child {
+            border-bottom: none;
+        }
+        /* 白色默认头像小号 */
+        .reply-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 3px;
+            background: #ffffff;
+            border: 1px solid #d5cfbf;
+            flex-shrink: 0;
+            float: left;
+            margin-right: 8px;
+        }
+        .reply-body {
+            overflow: hidden;
+        }
+        .reply-header {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 3px;
+        }
+        .reply-floor {
+            font-size: 10px;
+            color: #bbb;
+        }
+        .reply-text {
+            font-size: 13px;
+            color: #333;
+            line-height: 1.7;
+        }
+        /* 楼主回复高亮 */
+        .reply-item.is-lz {
+            background: #fdfaf0;
+        }
+
+        /* 底部 */
+        .forum-footer {
+            text-align: center;
+            padding: 16px;
+            font-size: 11px;
+            color: #bbb;
+            letter-spacing: 1px;
+        }
+
+        /* 响应式 */
+        @media (min-width: 768px) {
+            .scene-container {
+                max-width: 480px;
+                margin: 0 auto;
+                min-height: 90vh;
+                border-radius: 8px;
+                border: 2px solid #555;
+            }
+            .post-title {
+                font-size: 17px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 主场景容器 -->
+    <div class="scene-container page-enter">
+
+        <!-- 顶部导航 -->
+        <div class="tianya-nav">
+            <button class="btn-back" onclick="goBack()">←</button>
+            <span class="nav-logo">海角论坛</span>
+            <div class="nav-links">
+                <span>首页</span>
+                <span>|</span>
+                <span>情感</span>
+                <span>|</span>
+                <span>亲子</span>
+            </div>
+        </div>
+
+        <!-- 面包屑 -->
+        <div class="breadcrumb">
+            <span>海角论坛</span><span class="sep">›</span>
+            <span>亲子中心</span><span class="sep">›</span>
+            <span>宝宝起名</span>
+        </div>
+
+        <!-- 可滚动内容 -->
+        <div class="article-scroll">
+
+            <!-- 主楼帖子 -->
+            <div class="post-container">
+                <div class="post-title-bar">
+                    <span class="post-category">起名求助</span>
+                    <h1 class="post-title">为小侄女征名！！</h1>
+                </div>
+
+                <div class="main-post">
+                    <div class="post-author-row">
+                        <div class="author-avatar"></div>
+                        <div class="author-info">
+                            <span class="author-name">用户926469<span class="lz-tag">[楼主]</span></span>
+                            <div class="post-meta">1999-02-10 &nbsp; 14:32 &nbsp; 来自黑龙江</div>
+                        </div>
+                        <span class="floor-num">#1</span>
+                    </div>
+
+                    <div class="post-content">
+                        <p>为小侄女征名！！王姓怎么取名呀、？</p>
+                        <p>侄女昨天出生了，名字还没有起好，不想要太大众的名字(╥﹏╥)</p>
+                        <p>希望网友们可以帮帮忙，最好是有寓意的，非常感谢（-＾〇＾-）～～</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 回复区 -->
+            <div class="replies-section">
+                <div class="replies-count">共 10 条回复</div>
+
+                <!-- 1楼 -->
+                <div class="reply-item">
+                    <div class="reply-avatar"></div>
+                    <div class="reply-body">
+                        <div class="reply-header">
+                            <span class="reply-floor">1楼 &nbsp; 02-10 22:15</span>
+                        </div>
+                        <div class="reply-text">同姓王…王姓起名太难了（挥手）</div>
+                    </div>
+                </div>
+
+                <!-- 2楼 -->
+                <div class="reply-item">
+                    <div class="reply-avatar"></div>
+                    <div class="reply-body">
+                        <div class="reply-header">
+                            <span class="reply-floor">2楼 &nbsp; 02-12 09:40</span>
+                        </div>
+                        <div class="reply-text">建议先分析一下孩子的八字，再结合三才五格的吉数以及五行定好笔画，然后找对应的字，组成一个没有歧义也不会被起外号的名字</div>
+                    </div>
+                </div>
+
+                <!-- 3楼 -->
+                <div class="reply-item">
+                    <div class="reply-avatar"></div>
+                    <div class="reply-body">
+                        <div class="reply-header">
+                            <span class="reply-floor">3楼 &nbsp; 02-14 16:22</span>
+                        </div>
+                        <div class="reply-text">王佳怡，我准备给女儿起的名字，但是最后生了男孩（＾ｖ＾）</div>
+                    </div>
+                </div>
+
+                <!-- 4楼 -->
+                <div class="reply-item">
+                    <div class="reply-avatar"></div>
+                    <div class="reply-body">
+                        <div class="reply-header">
+                            <span class="reply-floor">4楼 &nbsp; 02-17 11:08</span>
+                        </div>
+                        <div class="reply-text">女孩就叫曼玉怎么样，听上去有种大美女的感觉</div>
+                    </div>
+                </div>
+
+                <!-- 5楼 -->
+                <div class="reply-item">
+                    <div class="reply-avatar"></div>
+                    <div class="reply-body">
+                        <div class="reply-header">
+                            <span class="reply-floor">5楼 &nbsp; 02-20 18:55</span>
+                        </div>
+                        <div class="reply-text">我家孩子叫王向齐，因为我俩一个姓王一个姓齐，怎么样？</div>
+                    </div>
+                </div>
+
+                <!-- 6楼 -->
+                <div class="reply-item">
+                    <div class="reply-avatar"></div>
+                    <div class="reply-body">
+                        <div class="reply-header">
+                            <span class="reply-floor">6楼 &nbsp; 02-23 14:30</span>
+                        </div>
+                        <div class="reply-text">王思意、王思婕、王思慧。望采纳</div>
+                    </div>
+                </div>
+
+                <!-- 7楼 楼主 -->
+                <div class="reply-item is-lz">
+                    <div class="reply-avatar"></div>
+                    <div class="reply-body">
+                        <div class="reply-header">
+                            <span class="reply-floor">7楼 &nbsp; 02-26 20:18</span>
+                        </div>
+                        <div class="reply-text">
+                            起好了!!最终就决定起名叫王曼昱了，曼：美，细腻。昱：明亮，照耀。我家是东北的，小侄女出生那天刚刚雪停了，是一个晴朗的冬日，所以用了"昱"这个字，寓意着光辉灿灿，明亮，闪闪发光。找人算过了，大师也说这个名字很适合她，跟八字也合，能祝福她前途光明。顺便一提小宝宝真的太可爱了(≧∪≦)小小一个，看得我心都化了～～
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 8楼 -->
+                <div class="reply-item">
+                    <div class="reply-avatar"></div>
+                    <div class="reply-body">
+                        <div class="reply-header">
+                            <span class="reply-floor">8楼 &nbsp; 03-01 10:05</span>
+                        </div>
+                        <div class="reply-text">这名字挺有意思，三个字全都是左右对称的</div>
+                    </div>
+                </div>
+
+                <!-- 9楼 -->
+                <div class="reply-item">
+                    <div class="reply-avatar"></div>
+                    <div class="reply-body">
+                        <div class="reply-header">
+                            <span class="reply-floor">9楼 &nbsp; 03-04 15:42</span>
+                        </div>
+                        <div class="reply-text">哈哈，还真是，挺好听的！</div>
+                    </div>
+                </div>
+
+                <!-- 10楼 -->
+                <div class="reply-item">
+                    <div class="reply-avatar"></div>
+                    <div class="reply-body">
+                        <div class="reply-header">
+                            <span class="reply-floor">10楼 &nbsp; 03-08 08:30</span>
+                        </div>
+                        <div class="reply-text">天哪，好喜欢这个名字，看来是一个出生在幸福家庭里的小女娃～祝好！</div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="forum-footer">—— 帖子完 —— &nbsp; | &nbsp; 海角论坛 &nbsp; 1999</div>
+
+        </div>
+
+    </div>
+
+    <!-- 引入全局公共JS -->
+    <script src="../assets/js/global.js"></script>
+
+    <script>
+        function goBack() {
+            GameAPI.navigateTo('search-result-1.html', 200);
+        }
+        console.log('📄 推文页加载完成 - 起名帖');
+    </script>
+</body>
+</html>

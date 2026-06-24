@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>手机桌面</title>
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <style>
+        /* ========== 手机桌面独有样式 ========== */
+
+        .scene-container {
+            max-width: 100vw;
+            min-height: 100vh;
+            margin: 0;
+            border-radius: 0;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow: hidden;
+            background: 
+                radial-gradient(ellipse at 20% 20%, #1a1a3e 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 70%, #162040 0%, transparent 50%),
+                linear-gradient(180deg, #0d1117 0%, #161b22 40%, #1a1a2e 100%);
+        }
+
+        /* 状态栏 */
+        .status-bar {
+            position: relative;
+            z-index: 5;
+            width: 100%;
+            padding: 14px 24px 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #ffffff;
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+        .status-bar .time {
+            font-weight: 600;
+        }
+        .status-icons {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+            font-size: 11px;
+        }
+        .signal-bars {
+            display: flex;
+            align-items: flex-end;
+            gap: 1.5px;
+            height: 12px;
+        }
+        .signal-bars i {
+            display: block;
+            width: 3px;
+            background: #ffffff;
+            border-radius: 1px;
+        }
+        .signal-bars i:nth-child(1) { height: 4px; }
+        .signal-bars i:nth-child(2) { height: 6px; }
+        .signal-bars i:nth-child(3) { height: 8px; }
+        .signal-bars i:nth-child(4) { height: 11px; }
+
+        .battery {
+            width: 24px;
+            height: 11px;
+            border: 1.5px solid rgba(255,255,255,0.8);
+            border-radius: 2px;
+            padding: 1.5px;
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+        .battery::after {
+            content: '';
+            position: absolute;
+            right: -3px;
+            top: 2.5px;
+            width: 2px;
+            height: 5px;
+            background: rgba(255,255,255,0.8);
+            border-radius: 0 1px 1px 0;
+        }
+        .battery-fill {
+            width: 80%;
+            height: 100%;
+            background: #ffffff;
+            border-radius: 1px;
+        }
+
+        /* 主屏幕区域 - APP 网格 */
+        .app-grid {
+            position: relative;
+            z-index: 3;
+            flex: 1;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            padding: 30px 28px 0;
+        }
+
+        .app-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 32px;
+        }
+
+        /* 单个APP */
+        .app-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: transform 0.15s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .app-item:active {
+            transform: scale(0.88);
+        }
+        .app-item.disabled {
+            cursor: default;
+        }
+        .app-item.disabled:active {
+            transform: none;
+        }
+
+        /* APP 图标容器 */
+        .app-icon {
+            width: 62px;
+            height: 62px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        /* APP 图标图片 */
+        .app-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            pointer-events: none;
+        }
+
+        /* APP 名称 */
+        .app-name {
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 11px;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+            text-align: center;
+        }
+
+        /* 底部导航条（Dock） */
+        .dock {
+            position: relative;
+            z-index: 5;
+            width: 88%;
+            margin: 0 auto 20px;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 28px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .dock .app-item {
+            margin-bottom: 0;
+        }
+        .dock .app-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 11px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        .dock .app-name {
+            font-size: 10px;
+        }
+
+        /* 响应式 */
+        @media (min-width: 768px) {
+            .scene-container {
+                max-width: 420px;
+                margin: 0 auto;
+                min-height: 90vh;
+                border-radius: 30px;
+                border: 2px solid #333;
+            }
+            .app-icon {
+                width: 68px;
+                height: 68px;
+                border-radius: 16px;
+            }
+            .app-name {
+                font-size: 12px;
+            }
+        }
+
+        @media (min-width: 1400px) {
+            .scene-container {
+                max-width: 420px;
+                margin: 2rem auto;
+                border-radius: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 主场景容器 -->
+    <div class="scene-container page-enter">
+
+        <!-- 状态栏 -->
+        <div class="status-bar">
+            <span class="time" id="statusTime">9:41</span>
+            <div class="status-icons">
+                <div class="signal-bars">
+                    <i></i><i></i><i></i><i></i>
+                </div>
+                <span style="font-size:11px; font-weight:600;">5G</span>
+                <div class="battery">
+                    <div class="battery-fill"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- APP 网格 - 主屏幕 -->
+        <div class="app-grid">
+            <!-- 第一行 -->
+            <div class="app-row">
+                <!-- 微博 - 可点击 -->
+                <div class="app-item" onclick="openApp('weibo')" title="微博">
+                    <div class="app-icon">
+                        <img src="../assets/images/icon-weibo.png" alt="微博">
+                    </div>
+                    <span class="app-name">微博</span>
+                </div>
+                <!-- 阅读 - 不可点击 -->
+                <div class="app-item disabled" title="阅读">
+                    <div class="app-icon">
+                        <img src="../assets/images/icon-reading.png" alt="阅读">
+                    </div>
+                    <span class="app-name">阅读</span>
+                </div>
+                <!-- 音乐 - 不可点击 -->
+                <div class="app-item disabled" title="音乐">
+                    <div class="app-icon">
+                        <img src="../assets/images/icon-music.png" alt="音乐">
+                    </div>
+                    <span class="app-name">音乐</span>
+                </div>
+            </div>
+
+            <!-- 第二行 -->
+            <div class="app-row">
+                <!-- 钉钉 - 不可点击 -->
+                <div class="app-item disabled" title="钉钉">
+                    <div class="app-icon">
+                        <img src="../assets/images/icon-dingtalk.png" alt="钉钉">
+                    </div>
+                    <span class="app-name">钉钉</span>
+                </div>
+                <!-- 微信 - 可点击 -->
+                <div class="app-item" onclick="openApp('wechat')" title="微信">
+                    <div class="app-icon">
+                        <img src="../assets/images/icon-wechat.png" alt="微信">
+                    </div>
+                    <span class="app-name">微信</span>
+                </div>
+                <!-- 搜索 - 可点击 -->
+                <div class="app-item" onclick="openApp('search')" title="搜索">
+                    <div class="app-icon">
+                        <img src="../assets/images/icon-search.png" alt="搜索">
+                    </div>
+                    <span class="app-name">搜索</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 底部 Dock 栏 -->
+        <div class="dock">
+            <!-- 微博 - 可交互 -->
+            <div class="app-item" onclick="openApp('weibo')" title="微博">
+                <div class="app-icon">
+                    <img src="../assets/images/icon-weibo.png" alt="微博">
+                </div>
+                <span class="app-name">微博</span>
+            </div>
+            <!-- 阅读 - 不可交互 -->
+            <div class="app-item disabled" title="阅读">
+                <div class="app-icon">
+                    <img src="../assets/images/icon-reading.png" alt="阅读">
+                </div>
+                <span class="app-name">阅读</span>
+            </div>
+            <!-- 搜索 - 可交互 -->
+            <div class="app-item" onclick="openApp('search')" title="搜索">
+                <div class="app-icon">
+                    <img src="../assets/images/icon-search.png" alt="搜索">
+                </div>
+                <span class="app-name">搜索</span>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- 引入全局公共JS -->
+    <script src="../assets/js/global.js"></script>
+
+    <script>
+        // ========== 手机桌面独有逻辑 ==========
+
+        function updateStatusTime() {
+            const now = new Date();
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            document.getElementById('statusTime').textContent = hours + ':' + minutes;
+        }
+        updateStatusTime();
+        setInterval(updateStatusTime, 30000);
+
+        function openApp(appName) {
+            GameAPI.audio.click();
+            GameAPI.storage.set('lastOpenedApp', appName);
+            console.log('📱 打开APP:', appName);
+
+            const pageMap = {
+                'weibo': 'weibo-login.html',
+                'wechat': 'wechat-main.html',
+                'search': 'search.html',
+            };
+
+            const targetPage = pageMap[appName];
+            if (targetPage) {
+                GameAPI.navigateTo(targetPage, 300);
+            }
+        }
+
+        console.log('📱 手机桌面加载完成');
+        console.log('✅ 可交互：微博、微信、搜索');
+        console.log('🔒 不可交互：阅读、音乐、钉钉');
+    </script>
+</body>
+</html>

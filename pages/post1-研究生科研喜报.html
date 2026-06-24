@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>科研喜报 - 王曼昱</title>
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <style>
+        /* ========== 微信公众号推文独有样式 ========== */
+
+        .scene-container {
+            max-width: 100vw;
+            min-height: 100vh;
+            margin: 0;
+            border-radius: 0;
+            background: #ffffff;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* ===== 顶部导航栏（微信公众号风格） ===== */
+        .wechat-nav {
+            position: relative;
+            z-index: 10;
+            padding: 12px 16px;
+            background: #ffffff;
+            border-bottom: 1px solid #ededed;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .btn-back {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border-radius: 50%;
+            transition: background 0.2s;
+            color: #333;
+            font-size: 18px;
+            border: none;
+            background: none;
+        }
+        .btn-back:hover { background: #f5f5f5; }
+        .nav-title {
+            font-size: 15px;
+            font-weight: 500;
+            color: #333;
+            letter-spacing: 0.5px;
+        }
+        .nav-placeholder {
+            width: 32px;
+        }
+
+        /* ===== 可滚动内容区 ===== */
+        .article-scroll {
+            flex: 1;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* ===== 推文头部 ===== */
+        .article-header {
+            padding: 24px 28px 8px;
+        }
+        .article-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #111;
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+        .article-meta {
+            font-size: 13px;
+            color: #999;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .article-meta .source-name {
+            color: #576b95;
+            font-weight: 500;
+        }
+
+        /* 分割线 */
+        .divider {
+            width: 100%;
+            height: 1px;
+            background: #ededed;
+            margin: 12px 0;
+        }
+
+        /* ===== 推文正文 ===== */
+        .article-body {
+            padding: 0 28px 30px;
+            font-size: 16px;
+            color: #333;
+            line-height: 1.9;
+            letter-spacing: 0.3px;
+        }
+        .article-body p {
+            margin-bottom: 16px;
+        }
+        .article-body .highlight-bold {
+            font-weight: 700;
+            color: #333;
+        }
+
+        /* ===== 底部 ===== */
+        .article-footer {
+            padding: 20px;
+            text-align: center;
+            border-top: 1px solid #ededed;
+            margin-top: 10px;
+        }
+        .article-footer .views {
+            font-size: 13px;
+            color: #999;
+        }
+
+        /* 响应式 */
+        @media (min-width: 768px) {
+            .scene-container {
+                max-width: 500px;
+                margin: 0 auto;
+                min-height: 90vh;
+                border-radius: 12px;
+                border: 1px solid #e0e0e0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 主场景容器 -->
+    <div class="scene-container page-enter">
+
+        <!-- 顶部导航 -->
+        <div class="wechat-nav">
+            <button class="btn-back" onclick="goBack()" title="返回">←</button>
+            <span class="nav-title">微信公众号</span>
+            <div class="nav-placeholder"></div>
+        </div>
+
+        <!-- 可滚动内容 -->
+        <div class="article-scroll">
+
+            <!-- 推文头部 -->
+            <div class="article-header">
+                <h1 class="article-title">
+                    科研喜报｜我院研究生王曼昱同学以第一作者在国际期刊《Houston World》发表高水平学术成果
+                </h1>
+                <div class="article-meta">
+                    <span class="source-name">管院之声</span>
+                    <span>2022年2月07日</span>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- 推文正文 -->
+            <div class="article-body">
+                <p>
+                    硕果飘香，捷报频传！近日，我院研究生王曼昱同学勇创佳绩，以第一作者身份成功在国际顶级期刊《Houston World》发表学术论文。
+                </p>
+                <p>
+                    潜心治学，步履不停。王曼昱同学本科期间开始接触科研学习，始终保持严谨的科研态度，深耕专业领域，勤于思考、勇于探索。进入我校以来，在导师的悉心指导下，她反复打磨研究内容，攻坚克难、稳步精进，最终高水平研究成果顺利见刊，为学院增添了亮眼的学术荣誉。
+                </p>
+                <p>
+                    时光淬炼，逐光前行。王曼昱同学用实际行动诠释了保持热爱、潜心钻研、引领开创的优良作风。正如她引用的名言警句所说："水滴石穿不是因为力量，而是因为坚持。"希望全院同学以王曼昱同学为榜样，积极投身学术科研，在专业学习与科研探索中不断突破自我，书写属于自己的青春答卷！
+                </p>
+                <p>
+                    特别提示，本院学生会还对王曼昱同学进行了独家专访，有志于科研事业的同学们可以搜索 <span class="highlight-bold">勇气与决心</span> 了解更多关于曼昱同学的科研故事哦～
+                </p>
+            </div>
+
+            <!-- 底部 -->
+            <div class="article-footer">
+                <span class="views">阅读 1.2万</span>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- 引入全局公共JS -->
+    <script src="../assets/js/global.js"></script>
+
+    <script>
+        // ========== 推文页独有逻辑 ==========
+
+        function goBack() {
+            GameAPI.navigateTo('search-result-1.html', 200);
+        }
+
+        console.log('📄 推文页加载完成 - 科研喜报');
+    </script>
+</body>
+</html>

@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>后记</title>
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .scene-container {
+            max-width: 100vw;
+            min-height: 100vh;
+            margin: 0;
+            border-radius: 0;
+            background: #96C0CE;
+            font-family: "Times New Roman", "SimSun", serif;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .main-scroll {
+            flex: 1;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            padding: 50px 20px 60px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            font-size: 32px;
+            font-weight: bold;
+            color: #9c2c2c;
+            letter-spacing: 4px;
+        }
+
+        .credits {
+            text-align: center;
+            font-size: 13px;
+            color: #8b6f6f;
+            letter-spacing: 2px;
+            margin-bottom: 4px;
+        }
+
+        .subtitle {
+            font-size: 13px;
+            color: #9c2c2c;
+            margin-top: 6px;
+            letter-spacing: 2px;
+            opacity: 0.7;
+        }
+
+        .cards-column {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            max-width: 480px;
+            margin: 0 auto;
+        }
+
+        .postscript-card {
+            background: rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(156, 44, 44, 0.15);
+            border-radius: 16px;
+            padding: 24px 22px 20px;
+        }
+
+        .card-header {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            margin-bottom: 16px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid rgba(156, 44, 44, 0.15);
+        }
+
+        .card-author-name {
+            font-size: 16px;
+            font-weight: 700;
+            color: #9c2c2c;
+            letter-spacing: 1px;
+        }
+
+        .card-author-id {
+            font-size: 11px;
+            color: #8b6f6f;
+            letter-spacing: 0.5px;
+        }
+
+        .postscript-text {
+            font-size: 14px;
+            color: #5a4040;
+            line-height: 2;
+            letter-spacing: 0.3px;
+        }
+
+        .postscript-text p {
+            margin-bottom: 10px;
+        }
+
+        .postscript-text p:last-child {
+            margin-bottom: 0;
+        }
+
+        .card-footer {
+            margin-top: 14px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(156, 44, 44, 0.1);
+            text-align: right;
+            font-size: 11px;
+            color: #8b6f6f;
+            letter-spacing: 1px;
+        }
+
+        .end-hint {
+            text-align: center;
+            padding: 28px 0 10px;
+            color: #9c2c2c;
+            font-size: 13px;
+            letter-spacing: 3px;
+            cursor: pointer;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 26px;
+            }
+            .postscript-text {
+                font-size: 13px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .scene-container {
+                max-width: 520px;
+                margin: 0 auto;
+                min-height: 90vh;
+                border-radius: 24px;
+                border: 1px solid #d5cebc;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="scene-container page-enter">
+
+    <div class="main-scroll" id="mainScroll">
+
+        <div class="header">
+            <div class="logo">后 记</div>
+            <div class="credits">ludengfish & glasssteelmentalcore</div>
+            <div class="subtitle">Postscript</div>
+        </div>
+
+        <div class="cards-column">
+
+            <!-- 路灯和鱼 -->
+            <div class="postscript-card">
+                <div class="card-header">
+                    <div class="card-author-name">@路灯和鱼</div>
+                    <div class="card-author-id">ludengfish</div>
+                </div>
+                <div class="postscript-text">
+                    <p>一眨眼又到了后记time！很开心和小玻又完成了一个新的企划哈哈，这次是完全没有尝试过的形式，还是很有挑战和压力的，非常谢谢玻璃钢老师愿意陪着我（鞠躬）</p>
+                    <p>其实直到现在还是很忐忑，不知道大家会不会喜欢这次活动。不过不管如何，它对我来说还是非常有意义，在搜索资料、撰写文案的过程里又回顾了曼昱从小到大的来时路，于是在这个过程中又反复爱上她好几次。</p>
+                    <p>其实做这个小游戏的初心很简单：在这个有些浪漫的日子，祝福无论哪一个平行时空的王曼昱，能够拥有幸福的美丽人生。至于这个世界的我，会永远期待你向这个世界发出挑战，也永远期待世界回报你^^</p>
+                </div>
+                <div class="card-footer">with love, ludengfish</div>
+            </div>
+
+            <!-- 不要直视玻璃钢 -->
+            <div class="postscript-card">
+                <div class="card-header">
+                    <div class="card-author-name">@不要直视玻璃钢</div>
+                    <div class="card-author-id">glasssteelmentalcore</div>
+                </div>
+                <div class="postscript-text">
+                    <p>玩到这里的宝宝你好呀，感谢你来看我们的后记，不知道你喜不喜欢这次的游戏体验呢，请多多反馈支持吧^^</p>
+                    <p>很感谢又和亲爱的灯灯一起做了这个企划，刚开始有这个构思，我先是觉得这个想法超棒，又觉得实操难度太大了，不过我们还是太棒了（人工智能的教导还是太全面了），居然真的做出来了！</p>
+                    <p>虽然经历了一个很长的战线，但是成品已经尽己所能地尽善尽美，爱像缓缓流淌的溪流，人像沙石，在缓慢的打磨之下变得光滑细腻，所以我们也缓慢地，将为了爱而生的企划做了出来。</p>
+                    <p>每次从场馆里出来后，回归现实生活的通勤路上，我总在放空，一个念头总会闯入我的脑海：离开那个所有人都在为你们欢呼的场域，离开那张球台之后，宇宙那么大，我该去哪里找你们呢。</p>
+                    <p>在制作寻昱的过程中，在构建属于王曼昱的另一种可能的人生时，我渐渐找到了答案。无论如何，无论何地，无论在哪个宇宙，爱是唯一守恒的定律，所以，我会找到你。</p>
+                    <p>最后，再次感谢小灯灯给我的支持和引导，感谢圆满带给我的许多力量，感谢大家的游玩！</p>
+                </div>
+                <div class="card-footer">with love, glasssteelmentalcore</div>
+            </div>
+
+        </div>
+
+        <div class="end-hint" onclick="goEnd()">—— 点击结束 ——</div>
+
+    </div>
+
+</div>
+
+<script src="../assets/js/global.js"></script>
+<script>
+    function goEnd() {
+        GameAPI.audio.click();
+        GameAPI.navigateTo('../index.html', 400);
+    }
+    console.log('📖 后记页加载完成');
+</script>
+</body>
+</html>
